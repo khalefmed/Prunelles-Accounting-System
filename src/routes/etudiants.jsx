@@ -130,6 +130,23 @@ const handleExport = (type) => {
   }
 };
 
+
+
+const appliquerChargeMensuelle = async () => {
+  const confirmAction = window.confirm(
+    t("Êtes-vous sûr de vouloir appliquer la charge mensuelle à tous les étudiants ?")
+  );
+
+  if (!confirmAction) return;
+
+  try {
+    await api.post("frais-mensuels/");
+    toast.success(t("Charge mensuelle appliquée avec succès"));
+  } catch (error) {
+    toast.error(t("Erreur lors de l'application de la charge mensuelle"));
+  }
+};
+
   return (
     <div className="flex flex-col gap-10 px-10 max-sm:px-4">
 
@@ -138,8 +155,16 @@ const handleExport = (type) => {
         <p className="text-textGreyColor font-medium">Page de gestion des étudiants</p>
       </div>
 
-      <div className="w-full px-6 py-4 bg-white rounded-lg flex flex-row justify-between">
-        <div className="flex flex-row gap-2">
+
+      <div
+            onClick={appliquerChargeMensuelle}
+            className="px-4 py-2 w-fit cursor-pointer bg-redColor text-white rounded-lg font-medium hover:opacity-90 transition"
+          >
+            {t("Appliquer la Charge mensuelle")}
+          </div>
+
+      <div className="w-full gap-2  px-6 py-4 bg-white rounded-lg flex flex-row justify-between">
+        <div className="flex flex-row gap-2 w-full">
           
           {/* SELECT CLASSE */}
           <select
@@ -178,6 +203,9 @@ const handleExport = (type) => {
             <option value="pdf">PDF</option>
             <option value="excel">Excel</option>
         </select>
+
+
+          
         </div>
 
         <AjouterEtudiant classesList={classes} />
