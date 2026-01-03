@@ -143,6 +143,7 @@ const appliquerChargeMensuelle = async () => {
     await api.post("frais-mensuels/");
     toast.success(t("Charge mensuelle appliquée avec succès"));
   } catch (error) {
+    console.log(error)
     toast.error(t("Erreur lors de l'application de la charge mensuelle"));
   }
 };
@@ -156,12 +157,12 @@ const appliquerChargeMensuelle = async () => {
       </div>
 
 
-      <div
+      {/* <div
             onClick={appliquerChargeMensuelle}
             className="px-4 py-2 w-fit cursor-pointer bg-redColor text-white rounded-lg font-medium hover:opacity-90 transition"
           >
             {t("Appliquer la Charge mensuelle")}
-          </div>
+          </div> */}
 
       <div className="w-full gap-2  px-6 py-4 bg-white rounded-lg flex flex-row justify-between">
         <div className="flex flex-row gap-2 w-full">
