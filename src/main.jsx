@@ -73,13 +73,13 @@ const router = createBrowserRouter([
   { path: "/connexion", element: <Connexion /> },
 ]);
 
-const lang = window.sessionStorage.getItem("lang");
+const lang = window.localStorage.getItem("lang");
 
 if(lang){
   i18n.changeLanguage(lang)
 }
 else {
-  window.sessionStorage.setItem('lang', i18n.language)
+  window.localStorage.setItem('lang', i18n.language)
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(

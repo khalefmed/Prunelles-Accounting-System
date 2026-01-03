@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const BACKEND_BASE_URL = "http://127.0.0.1:8000/api/";
 
-const token = window.sessionStorage.getItem("token")
+const token = window.localStorage.getItem("token")
 export const api = axios.create({
   timeout: 50000,
   baseURL: BACKEND_BASE_URL,

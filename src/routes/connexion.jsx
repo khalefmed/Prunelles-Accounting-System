@@ -30,10 +30,10 @@ function Connexion() {
         "telephone" : nom_utilisateur,
         "mot_de_passe" : mot_de_passe
       });
-      window.sessionStorage.setItem("token", response.data.token);
-      window.sessionStorage.setItem("prenom", response.data.utilisateur.first_name);
-      window.sessionStorage.setItem("nom", response.data.utilisateur.last_name);
-      window.sessionStorage.setItem("role", response.data.role);
+      window.localStorage.setItem("token", response.data.token);
+      window.localStorage.setItem("prenom", response.data.utilisateur.first_name);
+      window.localStorage.setItem("nom", response.data.utilisateur.last_name);
+      window.localStorage.setItem("role", response.data.role);
       window.location = "/"
       
     }

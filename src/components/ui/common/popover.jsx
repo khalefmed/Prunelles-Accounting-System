@@ -10,9 +10,9 @@ export default function MenuCompte() {
 
     const { i18n, t } = useTranslation();
 
-    const prenom = window.sessionStorage.getItem("prenom")
-    const nom = window.sessionStorage.getItem("nom")
-    const role = window.sessionStorage.getItem("role")
+    const prenom = window.localStorage.getItem("prenom")
+    const nom = window.localStorage.getItem("nom")
+    const role = window.localStorage.getItem("role")
   return (
     <div className="flex">
       <div className="">
