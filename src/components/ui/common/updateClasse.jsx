@@ -6,19 +6,21 @@ import { IoAdd } from "react-icons/io5";
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { MdCancel } from "react-icons/md";
+import { MdEditSquare } from "react-icons/md";
 
-const AjouterClasse = ({supprimer, id}) => {
+
+const UpdateClasse = ({name, monthly, id}) => {
     const { i18n, t } = useTranslation();
     
-        const [nom, setNom] = useState("");
-        const [charge, setCharge] = useState("");
+        const [nom, setNom] = useState(name);
+        const [charge, setCharge] = useState(monthly);
     
         const creer = async (e)  => {
             e.preventDefault();
             if (valider()) {
                 try {
-                    const response = await api.post(
-                      "classes/",
+                    const response = await api.put(
+                      `classes/${id}/`,
                       {
                           "nom_classe" : nom ,
                           "monthly_charge" : charge ,
@@ -49,16 +51,16 @@ const AjouterClasse = ({supprimer, id}) => {
 
   return <AlertDialog.Root>
     <AlertDialog.Trigger asChild>
-     <div className='bg-white rounded-full w-20 h-20 shadow-lg flex flex-row justify-center align-center items-center font-black text-4xl' >
-          <IoAdd />
-      </div>
+     <span className='  text-textGreyColor' >
+          <MdEditSquare />
+      </span>
     </AlertDialog.Trigger>
     <AlertDialog.Portal>
       <AlertDialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
       <AlertDialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <AlertDialog.Title className="text-blackColor m-0 text-[17px] font-semibold text-center flex flex-row items-center justify-between">
           <div></div>
-          {t("Nouvelle classe")}
+          {t("Modification")}
           <AlertDialog.Cancel asChild>
                       <button className="text-blackColor  hover:bg-bgGreyColor focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium ">
                         <MdCancel />
@@ -72,7 +74,7 @@ const AjouterClasse = ({supprimer, id}) => {
                 </div>
                 <div>
                     {/* <p  className='text-lg  text-blackColor font-semibold'>{t('Code')}</p> */}
-                    <input type="number" value={charge} onChange={(e) => setCharge(e.target.value)} placeholder={t("Charge mensuelle")} className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none placeholder-inputTextColor font-normal text-md" />
+                    <input type="number" value={charge} onChange={(e) => setCharge(e.target.value)} placeholder={t("Nom de la classe")} className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none placeholder-inputTextColor font-normal text-md" />
                 </div>
 
                 <div className='text-center'>
@@ -96,4 +98,4 @@ const AjouterClasse = ({supprimer, id}) => {
   </AlertDialog.Root>
 };
 
-export default AjouterClasse;
+export default UpdateClasse;

@@ -9,7 +9,7 @@ export const Header = ({ouvrir}) => {
     const { i18n, t } = useTranslation();
 
     const switchLanguage = lang => {
-        window.localStorage.setItem("lang", lang);
+        window.sessionStorage.setItem("lang", lang);
         window.location.reload();
       };
 

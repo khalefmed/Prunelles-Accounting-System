@@ -4,7 +4,7 @@ import AcceuilEtablissement from './acceuil_etablissement';
 
 export const Index = () => {
 
-    const role = window.localStorage.getItem("role");
+    const role = window.sessionStorage.getItem("role");
 
     
     return (

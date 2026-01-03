@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useTranslation } from "react-i18next";
+import UpdateEtudiant from '../common/updateEtudiant';
 
 
 export const ListeEtudiants = ({donnees, setDonnees}) => {
@@ -32,6 +33,9 @@ export const ListeEtudiants = ({donnees, setDonnees}) => {
                         <th className="py-4 text-start w-52 text-blackColor font-semibold text-sm rounded-tr-lg">
                             {t("Classe")}
                         </th>
+                        <th className="py-4 text-start w-52 text-blackColor font-semibold text-sm rounded-tr-lg">
+                            {t("Action")}
+                        </th>
                     </tr>
                 </thead>
                 <tbody className=''>
@@ -42,6 +46,7 @@ export const ListeEtudiants = ({donnees, setDonnees}) => {
                         <td className={`py-4 min-w-[100px] text-start  font-medium text-sm ${e.solde < 0 ? 'text-red-500' : 'text-green-500'} text-red`}>{ e.solde + ' MRU'}</td>
                         <td className='py-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm '>{e.contact}</td>
                         <td className='py-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm '>{e.classe.nom_classe}</td>
+                        <td className='py-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm '><UpdateEtudiant f_name={e.prenom} l_name={e.nom} matr={e.matricule} birthday={e.date_naissance} grade={e.classe} balance={e.solde} id={e.id} phone={e.contact} /></td>
                         
                     </tr>
                     )}

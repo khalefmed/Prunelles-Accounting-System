@@ -198,7 +198,7 @@ const creerParListe = async () => {
                 </div>
 
                 <div className='text-center'>
-                  <input type="submit" onClick={creerIndividuel} value={t('Enregistrer')}  className="w-1/2 rounded rounded-lg text-center py-2 mt-2 bg-buttonGradientSecondary  text-whiteColor font-normal cursor-pointer " />
+                  <input type="submit" onClick={creerIndividuel} value={t('Enregistrer')}  className="w-1/2  rounded-lg text-center py-2 mt-2 bg-buttonGradientSecondary  text-whiteColor font-normal cursor-pointer " />
                 </div>
             </form>
         )}

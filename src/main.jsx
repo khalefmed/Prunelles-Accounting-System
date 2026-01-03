@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Acceuil />,
+        element: <ProtectedRoute component={Acceuil} />,
       },
       {
         path: "/transactions",
@@ -58,11 +58,11 @@ const router = createBrowserRouter([
      
       {
         path: "/mot_de_passe",
-        element: <MotDePasse />,
+        element: <ProtectedRoute component={MotDePasse} />,
       },
       {
         path: "/profil",
-        element: <Profil />,
+        element: <ProtectedRoute component={Profil} />,
       },
       {
         path: "/deconnexion",
@@ -73,13 +73,13 @@ const router = createBrowserRouter([
   { path: "/connexion", element: <Connexion /> },
 ]);
 
-const lang = window.localStorage.getItem("lang");
+const lang = window.sessionStorage.getItem("lang");
 
 if(lang){
   i18n.changeLanguage(lang)
 }
 else {
-  window.localStorage.setItem('lang', i18n.language)
+  window.sessionStorage.setItem('lang', i18n.language)
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
