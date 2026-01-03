@@ -10,8 +10,6 @@ export default function Acceuil() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-      const token = sessionStorage.getItem("token");
-      if (!token) return;
     getStats();
   }, []);
 
