@@ -29,7 +29,11 @@ export const MotDePasse = () => {
               }
               catch (exception){
                 console.log(exception)
-                toast.error(<p className="text-redColor">{t('Une erreur s\'est produite')}</p>);
+                if (exception.response && exception.response.status === 400) {
+                    toast.error(<p className="text-redColor">{t('Ancien mot de passe incorrect')}</p>);
+                } else {
+                    toast.error(<p className="text-redColor">{t("Une erreur s'est produite")}</p>);
+                }
               }
 
         }
