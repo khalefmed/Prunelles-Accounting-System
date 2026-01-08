@@ -142,7 +142,7 @@ const creerParListe = async () => {
         </AlertDialog.Title>
 
         {/* TABS */}
-          <div className="flex mb-4 border-b border-gray-300">
+          {/* <div className="flex mb-4 border-b border-gray-300">
             <button
               className={`flex-1 py-2 ${tab === 'individuel' ? 'border-b-2 border-blue-500 font-semibold' : ''}`}
               onClick={() => setTab("individuel")}
@@ -155,7 +155,7 @@ const creerParListe = async () => {
             >
               {t("Par liste")}
             </button>
-          </div>
+          </div> */}
 
 
 

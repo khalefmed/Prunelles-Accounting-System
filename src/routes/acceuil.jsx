@@ -137,55 +137,9 @@ export default function Acceuil() {
         />
       </div>
 
-      {/* This Month Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="rounded-2xl shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-lg">Mois en cours</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Entrées ce mois</span>
-              <span className="font-semibold text-green-600">
-                {stats?.entrees_ce_mois?.toLocaleString()} MRU
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Sorties ce mois</span>
-              <span className="font-semibold text-red-600">
-                {stats?.sorties_ce_mois?.toLocaleString()} MRU
-              </span>
-            </div>
-            <div className="flex justify-between pt-3 border-t">
-              <span className="text-gray-600">Nouveaux étudiants</span>
-              <span className="font-bold text-purple-600">
-                +{stats?.nouveaux_etudiants_ce_mois}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+    
 
-        {/* Top Classes */}
-        <Card className="rounded-2xl shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-lg">Top 5 classes (effectif)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {stats?.top_classes?.length > 0 ? (
-              <div className="space-y-3">
-                {stats.top_classes.map((cls, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <span className="text-sm font-medium">{cls.nom_classe}</span>
-                    <Badge variant="secondary">{cls.nb_etudiants} élèves</Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 text-sm">Aucune donnée</p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      
     </div>
   );
 }
