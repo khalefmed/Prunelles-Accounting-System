@@ -42,7 +42,7 @@ export const ListeEtudiants = ({donnees, setDonnees}) => {
                     {donnees.map((e) => 
                     <tr key={e.id} className='bg-whiteColor'>
                         <td className={`py-4 px-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm rounded-lg`}>{e.matricule}</td>
-                        <td className='py-4 min-w-[200px] text-start text-textGreyColor font-medium text-sm '>{e.prenom + ' ' + e.nom}</td>
+                        <td className='py-4 min-w-[200px] text-start text-textGreyColor font-medium text-sm '>{(e.prenom !== 'nan' ? e.prenom + ' ' : '') + (e.nom || '')}</td>
                         <td className={`py-4 min-w-[100px] text-start  font-medium text-sm ${e.solde < 0 ? 'text-red-500' : 'text-green-500'} text-red`}>{ e.solde + ' MRU'}</td>
                         <td className='py-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm '>{e.contact}</td>
                         <td className='py-4 min-w-[100px] text-start text-textGreyColor font-medium text-sm '>{e.classe.nom_classe}</td>

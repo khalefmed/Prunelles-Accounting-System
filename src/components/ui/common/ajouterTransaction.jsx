@@ -1,179 +1,167 @@
 import React, { useEffect, useState } from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { useTranslation } from "react-i18next";
-import { MdDelete } from "react-icons/md";
 import { IoAdd } from "react-icons/io5";
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { MdCancel } from "react-icons/md";
+// 1. Importation de react-select
+import Select from 'react-select';
 
-const AjouterTransaction = ({supprimer, id}) => {
-    const { i18n, t } = useTranslation();
-    
-        const [montant, setMontant] = useState("");
-        const [note, setNote] = useState("");
-        const [type, setType] = useState("");
-        const [etudiant, setEtudiant] = useState("");
-        const [compte, setCompte] = useState("");
-        const [types, setTypes] = useState([]);
-        const [comptes, setComptes] = useState([]);
-        const [etudiants, setEtudiants] = useState([]);
+const AjouterTransaction = ({ supprimer, id }) => {
+    const { t } = useTranslation();
 
-          useEffect(() => {
-            get();
-          }, [])
-        
-          const get = async ()  => {
+    const [montant, setMontant] = useState("");
+    const [note, setNote] = useState("");
+    const [type, setType] = useState("");
+    const [etudiant, setEtudiant] = useState("");
+    const [compte, setCompte] = useState("");
+    const [types, setTypes] = useState([]);
+    const [comptes, setComptes] = useState([]);
+    const [etudiants, setEtudiants] = useState([]);
+
+    useEffect(() => {
+        get();
+    }, [])
+
+    const get = async () => {
+        try {
+            const response = await api.get("types");
+            const response2 = await api.get("comptes");
+            const response3 = await api.get("etudiants");
+            setTypes(response.data);
+            setComptes(response2.data);
+            setEtudiants(response3.data);
+        } catch (exception) {
+            toast.error(<p className="text-redColor">{t('Une erreur s\'est produite')}</p>);
+        }
+    }
+
+    // 2. Préparation des options pour le Select
+    const optionsEtudiants = etudiants.map(e => ({
+        value: e.id,
+        label: `${e.matricule} ${e.prenom} ${e.nom}`
+    }));
+
+    const creer = async (e) => {
+        e.preventDefault();
+        if (valider()) {
             try {
-              const response = await api.get("types"); 
-              const response2 = await api.get("comptes"); 
-              const response3 = await api.get("etudiants"); 
-              console.log(response)
-              setTypes(response.data)
-              setComptes(response2.data)
-              setEtudiants(response3.data)
+                await api.post("transactions/", {
+                    "montant": montant,
+                    "type": type,
+                    "compte": compte,
+                    "etudiant": etudiant,
+                    "note": note,
+                });
+                window.location = "/transactions";
+            } catch (exception) {
+                toast.error(<p className="text-redColor">{t('Une erreur s\'est produite')}</p>);
             }
-            catch (exception){
-              console.log(exception)
-              toast.error(<p className="text-redColor">{t('Une erreur s\'est produite')}</p>);
-            }
-          }
-    
-        const creer = async (e)  => {
-            e.preventDefault();
-            if (valider()) {
-                try {
-                    const response = await api.post(
-                      "transactions/",
-                      {
-                          "montant" : montant ,
-                          "type" : type ,
-                          "compte" : compte ,
-                          "etudiant" : etudiant ,
-                          "note" : note ,
-                      }
-                      ); 
-                      window.location = "/transactions"
-                  }
-                  catch (exception){
-                    console.log(exception)
-                    toast.error(<p className="text-redColor">{t('Une erreur s\'est produite')}</p>);
-                  }
-    
-            }
-            else {
-                toast.error(<p className="text-redColor">{t('Veuillez remplir les champs')}</p>);
-            }
-            
+        } else {
+            toast.error(<p className="text-redColor">{t('Veuillez remplir les champs')}</p>);
         }
-    
-    
-        const valider = () => {
-            if (montant == "" || compte == "" || type == ""){
-                return false;
-            }
-            return true;
-        }
+    }
 
+    const valider = () => {
+        return montant !== "" && compte !== "" && type !== "";
+    }
 
-  return <AlertDialog.Root>
-    <AlertDialog.Trigger asChild>
-     <div className='bg-buttonGradientSecondary rounded-md shadow-lg flex flex-row justify-center align-center items-center font-medium text-md px-4 py-2 text-white gap-2 cursor-pointer' >
-          <IoAdd />
-          Nouvelle
-      </div>
-    </AlertDialog.Trigger>
-    <AlertDialog.Portal>
-      <AlertDialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <AlertDialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-        <AlertDialog.Title className="text-blackColor m-0 text-[17px] font-semibold text-center flex flex-row items-center justify-between">
-          <div></div>
-          {t("Nouvelle transaction")}
-          <AlertDialog.Cancel asChild>
-                      <button className="text-blackColor  hover:bg-bgGreyColor focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium ">
-                        <MdCancel />
-                      </button>
-                    </AlertDialog.Cancel>
-        </AlertDialog.Title>
-        <form onSubmit={(e) => creer(e)} className='w-full max-sm:w-full flex flex-col gap-6 mt-6  '>
-                
-                <div>
-                    {/* <p  className='text-lg  text-blackColor font-semibold'>{t('Code')}</p> */}
-                    <input type="number" value={montant} onChange={(e) => setMontant(e.target.value)} placeholder={t("Montant")} className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none placeholder-inputTextColor font-normal text-md" />
+    // 3. Style personnalisé pour correspondre à votre UI existante
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#F1F7FF', // Correspond à votre bg-inputFieldColor
+            borderRadius: '0.5rem',
+            border: 'none',
+            padding: '2px',
+            boxShadow: 'none'
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: '#9CA3AF', // Correspond à placeholder-inputTextColor
+        })
+    };
+
+    return (
+        <AlertDialog.Root>
+            <AlertDialog.Trigger asChild>
+                <div className='bg-buttonGradientSecondary rounded-md shadow-lg flex flex-row justify-center align-center items-center font-medium text-md px-4 py-2 text-white gap-2 cursor-pointer'>
+                    <IoAdd />
+                    {t("Nouvelle")}
                 </div>
-                
-                <div>
-                    <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className={`px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none  font-normal text-md ${type != '' ? 'text-blackColor' : 'text-inputTextColor'}`}
-                    >
-                        <option value="">{t("Type")}</option>
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+                <AlertDialog.Overlay className="bg-blackA6 fixed inset-0" />
+                <AlertDialog.Content className="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-lg focus:outline-none">
+                    <AlertDialog.Title className="text-blackColor m-0 text-[17px] font-semibold text-center flex flex-row items-center justify-between">
+                        <div />
+                        {t("Nouvelle transaction")}
+                        <AlertDialog.Cancel asChild>
+                            <button className="text-blackColor hover:bg-bgGreyColor h-[35px] w-[35px] flex items-center justify-center rounded-full">
+                                <MdCancel size={20} />
+                            </button>
+                        </AlertDialog.Cancel>
+                    </AlertDialog.Title>
 
-                        {types.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.nom_type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <select
-                        value={compte}
-                        onChange={(e) => setCompte(e.target.value)}
-                        className={`px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none  font-normal text-md ${compte != '' ? 'text-blackColor' : 'text-inputTextColor'}`}
-                    >
-                        <option value="">{t("Compte")}</option>
+                    <form onSubmit={creer} className='w-full flex flex-col gap-6 mt-6'>
+                        <input 
+                            type="number" 
+                            value={montant} 
+                            onChange={(e) => setMontant(e.target.value)} 
+                            placeholder={t("Montant")} 
+                            className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none" 
+                        />
 
-                        {comptes.map((compte) => (
-                            <option key={compte.id} value={compte.id}>
-                                {compte.nom_compte}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <select
-                        value={etudiant}
-                        onChange={(e) => setEtudiant(e.target.value)}
-                        className={`px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none  font-normal text-md ${etudiant != '' ? 'text-blackColor' : 'text-inputTextColor'}`}
-                    >
-                        <option value="">{t("Etudiant")}</option>
+                        <select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none"
+                        >
+                            <option value="">{t("Type")}</option>
+                            {types.map((t) => <option key={t.id} value={t.id}>{t.nom_type}</option>)}
+                        </select>
 
-                        {etudiants.map((etudiant) => (
-                            <option key={etudiant.id} value={etudiant.id}>
-                                {etudiant.matricule}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    {/* <p  className='text-lg  text-blackColor font-semibold'>{t('Code')}</p> */}
-                    <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("Note")} className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none placeholder-inputTextColor font-normal text-md" />
-                </div>
+                        <select
+                            value={compte}
+                            onChange={(e) => setCompte(e.target.value)}
+                            className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none"
+                        >
+                            <option value="">{t("Compte")}</option>
+                            {comptes.map((c) => <option key={c.id} value={c.id}>{c.nom_compte}</option>)}
+                        </select>
 
+                        {/* --- NOUVEAU DROPDOWN AVEC RECHERCHE --- */}
+                        <div>
+                            <Select
+                                options={optionsEtudiants}
+                                placeholder={t("Etudiant")}
+                                isClearable
+                                isSearchabl
+                                styles={customStyles}
+                                onChange={(option) => setEtudiant(option ? option.value : "")}
+                                noOptionsMessage={() => t("Aucun étudiant trouvé")}
+                            />
+                        </div>
 
-                
+                        <input 
+                            type="text" 
+                            value={note} 
+                            onChange={(e) => setNote(e.target.value)} 
+                            placeholder={t("Note")} 
+                            className="px-4 py-2 w-full bg-inputFieldColor rounded-lg outline-none" 
+                        />
 
-                <div className='text-center'>
-                  <input type="submit" onClick={creer} value={t('Enregistrer')}  className="w-1/2 rounded rounded-lg text-center py-2 mt-2 bg-buttonGradientSecondary  text-whiteColor font-normal cursor-pointer " />
-                </div>
-            </form>
-        {/* <div className="flex justify-end gap-2">
-          <AlertDialog.Cancel asChild>
-            <button className="text-textGreyColor  hover:bg-bgGreyColor focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium ">
-              {t('Annuler')}
-            </button>
-          </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={() => supprimer(id)}>
-            <button className="text-red11 bg-red4 hover:bg-red5 focus:shadow-red7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-              {t("Oui, je suis sûr")}
-            </button>
-          </AlertDialog.Action>
-        </div> */}
-      </AlertDialog.Content>
-    </AlertDialog.Portal>
-  </AlertDialog.Root>
+                        <div className='text-center'>
+                            <button type="submit" className="w-1/2 rounded-lg text-center py-2 mt-2 bg-buttonGradientSecondary text-white font-normal cursor-pointer">
+                                {t('Enregistrer')}
+                            </button>
+                        </div>
+                    </form>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
 };
 
 export default AjouterTransaction;

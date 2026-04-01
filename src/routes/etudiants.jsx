@@ -80,13 +80,12 @@ const exportPDF = () => {
   // Title
   doc.text("Liste des étudiants", 14, 16);
 
-  const tableColumn = ["Nom", "Prenom", "Classe", "Solde"];
+  const tableColumn = ["Nom complet", "Classe", "Solde"];
   const tableRows = [];
 
   filteredListe.forEach((item) => {
     const row = [
-      item.nom,
-      item.prenom,
+      `${item.nom} ${item.prenom}`,
       item.classe.nom_classe,  // adapte selon ton API
       item.solde
     ];
@@ -162,7 +161,7 @@ const appliquerChargeMensuelle = async () => {
             onClick={appliquerChargeMensuelle}
             className="px-4 py-2 w-fit cursor-pointer bg-redColor text-white rounded-lg font-medium hover:opacity-90 transition"
           >
-            {t("Appliquer la Charge mensuelle")}
+            {t("Appliquer la Charge trimestrielle")}
           </div> 
 
       <div className="w-full gap-2  px-6 py-4 bg-white rounded-lg flex flex-row justify-between">
